@@ -32,9 +32,8 @@ async function createModels(moduleName: string) {
     throw e;
   }
 }
-createModels('auth').then(() => createModels('kitchen'));
-
-
+// createModels('auth').then(() => createModels('kitchen'));
+createModels('kitchen')
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

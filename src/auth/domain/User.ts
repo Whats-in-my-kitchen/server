@@ -1,9 +1,9 @@
-export default class User{
-    constructor (
+export default class User {
+    constructor(
         public readonly id: string,
         public readonly username: string,
-        public readonly emailAddress: string,
+        public readonly email: string,
         public readonly password: string,
-        public readonly displayImageUrl: string,
-    ){}
+        public readonly type: string,
+    ) { }
 }

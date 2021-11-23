@@ -1,5 +1,5 @@
 'use strict';
-import Kitchen from '../../../kitchen/domain/Kitchen/Kitchen';
+import Kitchen from '../../domain/Kitchen/Kitchen';
 // import UserModel from '../../../auth/data/models/UserModel';
 import { Model, UUIDV4 }from 'sequelize';
 
@@ -19,9 +19,9 @@ module.exports = (sequelize:any,DataTypes: any) => {
          inventoryId!: string;
          
         static associate(models:any){
-            KitchenModel.belongsToMany(models.User,{
-                through: 'KitchenAssignment'
-            });
+            // KitchenModel.belongsToMany(models.User,{
+            //     through: 'KitchenAssignments'
+            // });
             // KitchenModel.belongsTo(models.InventoryModel);
         }
     }

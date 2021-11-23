@@ -1,6 +1,5 @@
 'use strict';
-import Kitchen from '../../../kitchen/domain/Kitchen/Kitchen';
-// import UserModel from '../../../auth/data/models/UserModel';
+import Kitchen from '../../domain/Kitchen/Kitchen';
 import { Model, UUIDV4 } from 'sequelize';
 
 interface KitchenAssignmentModel {
@@ -19,30 +18,25 @@ module.exports = (sequelize: any, DataTypes: any) => {
         UserId!: string;
 
         static associate(models: any) {
-            // KitchenAssignment.belongsToMany(models.User,{
-            //     through: 'KitchenAssignment'
-            // });
-            // KitchenAssignment.belongsTo(models.InventoryModel);
+            // define association here
         }
     }
     KitchenAssignment.init({
         KitchenId: {
             type: DataTypes.UUID,
-            defaultValue: UUIDV4,
             allowNull: false,
             primaryKey: true,
             references: {
-                model: 'Kitchen',
+                model: 'Kitchens',
                 key: 'id'
             }
         },
         UserId: {
             type: DataTypes.UUID,
-            defaultValue: UUIDV4,
             allowNull: false,
             primaryKey: true,
             references: {
-                model: 'User',
+                model: 'Users',
                 key: 'id'
             }
         },
