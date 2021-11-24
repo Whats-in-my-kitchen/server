@@ -5,7 +5,6 @@ export default interface IAuthRepository {
     add(
         username: string,
         email: string,
-        type: string,
         passwordHash?: string,
     ): Promise<string>;
 }

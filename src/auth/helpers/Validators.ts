@@ -3,9 +3,9 @@ import { body, validationResult } from 'express-validator'
 
 export const signupValidationRules = () => {
     return [
-        body('name', 'Name is required').notEmpty(),
+        body('username', 'Name is required').notEmpty(),
         body('email', 'Invalid email').notEmpty().isEmail().normalizeEmail(),
-        body('auth_type', 'Auth type is required').notEmpty(),
+
         body('password', 'Password is required (min 5 characters)')
             .if(body('auth_type').equals('email'))
             .notEmpty()
@@ -19,7 +19,6 @@ export const signinValidationRules = () => {
             .if(body('auth_type').not().equals('email'))
             .notEmpty(),
         body('email', 'Invalid email').not().isEmpty().isEmail().normalizeEmail(),
-        body('auth_type', 'Auth type is required').notEmpty(),
         body('password', 'Password is required (min 5 characters)')
             .if(body('auth_type').equals('email'))
             .notEmpty()

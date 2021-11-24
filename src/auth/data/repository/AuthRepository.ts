@@ -14,20 +14,15 @@ export default class AuthRepository implements IAuthRepository {
             user.username,
             user.email,
             user.password ?? '',
-            user.type,
         );
     }
-
     public async add(
         username: string,
-        displayImageUrl: string,
         email: string,
-        type: string,
         passwordHash?: string
     ): Promise<string> {
         const userModel = this.client.model<UserModel>('User', UserSchema)
         const savedUser = new userModel({
-            type: type,
             username: username,
             email: email.toLowerCase(),
         })

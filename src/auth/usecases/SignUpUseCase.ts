@@ -6,12 +6,10 @@ export default class SignUpUseCase {
         private authRespository: IAuthRepository,
         private passwordService: IPasswordService
     ) { }
-
     public async execute(
         username: string,
-        authType: string,
         email: string,
-        password: string
+        password: string,
     ): Promise<string> {
         const user = await this.authRespository.find(email).catch((_) => null)
         if (user) return Promise.reject('User already exists')
@@ -24,9 +22,10 @@ export default class SignUpUseCase {
         const userId = await this.authRespository.add(
             username,
             email,
-            authType,
             passwordhash
         )
         return userId
     }
+
+
 }

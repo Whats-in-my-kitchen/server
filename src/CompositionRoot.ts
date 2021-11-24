@@ -14,7 +14,7 @@ export default class CompositionRoot {
     public static configure() {
         this.client = new mongoose.Mongoose()
         this.redisClient = redis.createClient()
-        console.log('🥶 🥶' + process.env.DEV_DB);
+
         const connectionStr = encodeURI(process.env.DEV_DB as string)
         this.client.connect(connectionStr, {
             // TODO add these things.

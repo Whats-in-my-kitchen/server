@@ -10,10 +10,9 @@ export default class SignInUseCase {
         username: string,
         email: string,
         password: string,
-        type: string
+
     ): Promise<string> {
-        if (type === 'email') return this.emailLogin(email, password)
-        return this.oauthLogin(username, email, type)
+        return this.emailLogin(email, password)
     }
 
     private async emailLogin(email: string, password: string) {
@@ -21,14 +20,5 @@ export default class SignInUseCase {
         if (!user || !(await this.passwordService.compare(password, user.password)))
             return Promise.reject('Invalid email or password')
         return user.id
-    }
-    private async oauthLogin(username: string, email: string, type: string) {
-        const user = await this.authRepository.find(email).catch((_) => null)
-        if (user && user.type === 'email')
-            return Promise.reject('account already exists, log in with password')
-        if (user) return user.id
-
-        const userId = await this.authRepository.add(username, email, type)
-        return userId
     }
 }

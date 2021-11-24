@@ -29,9 +29,9 @@ export default class AuthController {
 
     public async signin(req: express.Request, res: express.Response) {
         try {
-            const { username, email, password, auth_type } = req.body
+            const { username, email, password } = req.body
             return this.signInUseCase
-                .execute(username, email, password, auth_type)
+                .execute(username, email, password)
                 .then((id: string) =>
                     res.status(200).json({ auth_token: this.tokenService.encode(id) })
                 )
@@ -43,11 +43,13 @@ export default class AuthController {
 
     public async signup(req: express.Request, res: express.Response) {
         try {
-            const { username, email, password, auth_type } = req.body
+            const { username, email, password } = req.body
             return this.signUpUseCase
-                .execute(username, auth_type, email, password)
-                .then((id: string) =>
+                .execute(username, email, password)
+                .then((id: string) => {
+
                     res.status(200).json({ auth_token: this.tokenService.encode(id) })
+                }
                 )
                 .catch((err: Error) => res.status(404).json({ error: err }))
         } catch (err) {
