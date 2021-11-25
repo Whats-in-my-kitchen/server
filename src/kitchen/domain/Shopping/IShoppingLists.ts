@@ -1,19 +1,16 @@
-import Pageable from '../core/Pageable';
-import GroceryItem from '../Grocery/Grocery';
-import ShoppingList from './ShoppingList';
+import { GroceryItem } from "../core/GroceryItem/GroceryItem";
+import Pageable from "../core/Pageable";
+import { ShoppingList } from "./ShoppingLists";
 
-export default interface IShoppingListRepository {
+export default interface IShoppingLists {
     findAll(page: number, pageSize: number): Promise<Pageable<ShoppingList>>
-
-    findOne(id: string): Promise<ShoppingList>
-
     search(
         page: number,
         pageSize: number,
         query: string,
     ): Promise<Pageable<ShoppingList>>
-    
-    getGroceryItems(shoppingListId: string): Promise<GroceryItem[]>
+    // CRUD
+    findOne(id: string): Promise<ShoppingList>
     createShoppingList(shoppingList: ShoppingList): Promise<ShoppingList>
     updateShoppingList(shoppingList: ShoppingList): Promise<ShoppingList>
     deleteShoppingList(shoppingListId: string): Promise<ShoppingList>
