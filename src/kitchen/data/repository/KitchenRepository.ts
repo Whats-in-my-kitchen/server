@@ -1,6 +1,6 @@
-import User from "../../../../auth/domain/User";
-import { IKitchenRepository } from "../../../domain/Kitchen/IKitchenRepository";
-import { Kitchen } from "../../../domain/Kitchen/Kitchen";
+import User from "../../../auth/domain/User";
+import { IKitchenRepository } from "../../domain/Kitchen/IKitchenRepository";
+import { Kitchen } from "../../domain/Kitchen/Kitchen";
 
 export default class KitchenRepository implements IKitchenRepository {
 

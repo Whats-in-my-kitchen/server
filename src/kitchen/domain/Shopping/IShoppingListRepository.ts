@@ -2,7 +2,7 @@ import { GroceryItem } from "../core/GroceryItem/GroceryItem";
 import Pageable from "../core/Pageable";
 import { ShoppingList } from "./ShoppingLists";
 
-export default interface IShoppingLists {
+export default interface IShoppingListRepository {
     findAll(page: number, pageSize: number): Promise<Pageable<ShoppingList>>
     search(
         page: number,
