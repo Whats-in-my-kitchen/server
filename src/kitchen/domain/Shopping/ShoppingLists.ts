@@ -5,7 +5,6 @@ export class ShoppingList {
         public readonly ownerId: string,
         public readonly kitchenId: string,
         public readonly description: string,
-        public readonly displayImageUrl: string,
     ) {
     }
 }
