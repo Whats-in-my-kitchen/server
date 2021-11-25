@@ -13,6 +13,6 @@ const ShoppingListSchema = new mongoose.Schema({
     ownerId: { type: String, required: true },
     kitchenId: { type: String },
     description: { type: String, required: true },
-    // users: { type: [String] },
+    items: { type: [String] },
 })
 export { ShoppingListSchema }

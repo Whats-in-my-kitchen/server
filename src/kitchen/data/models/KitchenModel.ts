@@ -1,24 +1,27 @@
 import * as mongoose from 'mongoose'
 export interface KitcenDocument extends mongoose.Document {
     name: string,
-    inventoryId: string,
+    kitchenCode: string,
+    users: string[],
+    inventory: string[]
 }
-export interface InventoryDocument extends mongoose.Document {
-    kitchenId: string,
-    groceryItems: string[]
-}
+
 
 export interface KitchenModel extends mongoose.Model<KitcenDocument> { }
-export interface InventoryModel extends mongoose.Model<InventoryDocument> { }
 
 const KitchenSchema = new mongoose.Schema({
-    inventoryId: { type: String },
-    name: { type: String, required: true }
+
+    name: { type: String, required: true },
+    kitchenCode: { type: String, required: true },
+    users: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+    },
+    inventory: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "groceryItem",
+    },
 })
 
-const InventorySchema = new mongoose.Schema({
-    kitchenId: { type: String, required: true },
-    groceryItems: { type: [String] },
-})
 
-export { KitchenSchema, InventorySchema }
+export { KitchenSchema }

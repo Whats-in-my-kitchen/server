@@ -1,8 +1,8 @@
 import User from '../../../auth/domain/User';
-import { Inventory, Kitchen } from './Kitchen';
+import Kitchen from './Kitchen';
 
 
-export interface IKitchenRepository {
+export default interface IKitchenRepository {
     // Kitchen
     createKitchen(kitchen: Kitchen): Promise<Kitchen>
     findOne(id: string): Promise<Kitchen>
@@ -11,15 +11,4 @@ export interface IKitchenRepository {
     // Users in Kitchen
     addUserToKitchen(user: User): Promise<User>
     removeUserFromKitchen(user: User): Promise<User>
-}
-
-export interface IInventoryRepository {
-    // Kitchen
-    create(inventory: Inventory): Promise<Inventory>
-    findOne(id: string): Promise<Inventory>
-    update(inventory: Inventory): Promise<Inventory>
-    delete(Inventory: Inventory): Promise<Inventory>
-    // Users in Inventory
-    addUserToInventory(user: User): Promise<User>
-    removeUserFromInventory(user: User): Promise<User>
 }

@@ -1,8 +1,8 @@
 import User from "../../../auth/domain/User";
-import { IKitchenRepository } from "../../domain/Kitchen/IKitchenRepository";
-import { Kitchen } from "../../domain/Kitchen/Kitchen";
+import IKitchenRepository from "../../domain/Kitchen/IKitchenRepository";
+import Kitchen from "../../domain/Kitchen/Kitchen";
 
-export default class KitchenRepository implements IKitchenRepository {
+export class KitchenRepository implements IKitchenRepository {
 
     createKitchen(kitchen: Kitchen): Promise<Kitchen> {
         throw new Error("Method not implemented.");
@@ -28,3 +28,4 @@ export default class KitchenRepository implements IKitchenRepository {
     }
 
 }
+
