@@ -11,6 +11,9 @@ const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+// Routes
 app.use('/auth', CompositionRoot.authRouter())
+app.use('/kitchen', CompositionRoot.kitchenRouter())
 
 app.listen(PORT, () => console.log(`listening on port ${PORT}`))

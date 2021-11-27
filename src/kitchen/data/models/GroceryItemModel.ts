@@ -1,18 +1,21 @@
 import * as mongoose from 'mongoose';
 export interface GroceryItemDocument extends mongoose.Document {
     name: string,
-    ownerId: string,
-    kitchenId: string,
-    description: string,
+    displayImageUrl?: string,
+    unitPrice?: number,
+    unitMeasurement?: string,
+    tags?: string[],
+    count?: number,
 }
 
 export interface GroceryItemModel extends mongoose.Model<GroceryItemDocument> { }
 
-const GroceryItemModelSchema = new mongoose.Schema({
+const GroceryItemSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    displayImageUrl: { type: String, required: true },
-    unitPrice: { type: Number, required: true },
+    displayImageUrl: { type: String, required: false },
+    unitPrice: { type: Number, required: false },
     unitMeasurement: { type: String },
+    count: { type: Number },
     tags: { type: [String] },
 })
-export { GroceryItemModelSchema }
+export { GroceryItemSchema }

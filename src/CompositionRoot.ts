@@ -6,6 +6,8 @@ import JwtTokenService from './auth/data/services/JwtTokenService'
 import RedisTokenStore from './auth/data/services/RedisTokenStore'
 import AuthRouter from './auth/entrypoint/AuthRouter'
 import TokenValidator from './auth/helpers/TokenValidator'
+import { KitchenRepository } from './kitchen/data/repository/KitchenRepository'
+import KitchenRouter from './kitchen/entrypoint/kitchen/KitchenRouter'
 
 export default class CompositionRoot {
     private static client: mongoose.Mongoose
@@ -37,6 +39,15 @@ export default class CompositionRoot {
             passwordService,
             tokenValidator
         )
+    }
+
+    public static kitchenRouter() {
+        const repository = new KitchenRepository(this.client)
+        const tokenService = new JwtTokenService(process.env.PRIVATE_KEY as string)
+        const tokenStore = new RedisTokenStore(this.redisClient)
+        const tokenValidator = new TokenValidator(tokenService, tokenStore)
+
+        return KitchenRouter.configure(repository, tokenValidator)
     }
 
 
