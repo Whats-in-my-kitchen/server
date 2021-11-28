@@ -11,8 +11,9 @@ export default class KitchenController {
     public async createKitchen(req: express.Request, res: express.Response) {
         try {
             const { name } = req.body
+
             return this.repository
-                .createKitchen(name, '1234')
+                .createKitchen(name, req.user)
                 .then((kitchen) =>
                     res.status(200).json({
                         kitchen: kitchen,

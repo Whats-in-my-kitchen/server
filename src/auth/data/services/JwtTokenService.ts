@@ -15,6 +15,7 @@ export default class JwtTokenService implements ITokenService {
         return token
     }
     decode(token: string): string | object {
+        console.log(token)
         try {
             const decoded = jwt.verify(token, this.privateKey)
             return decoded

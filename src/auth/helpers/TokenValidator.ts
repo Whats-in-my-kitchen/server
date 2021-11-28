@@ -18,6 +18,15 @@ export default class TokenValidator {
         )
             return res.status(403).json({ error: 'Invalid Token' })
 
+        const decoded = this.tokenService.decode(authHeader.substring(7))
+        const userID = Object.values(decoded)[0]
+        req.user = userID
+        console.log(req.user)
         next()
+    }
+}
+declare module 'express-serve-static-core' {
+    interface Request {
+        user?: any
     }
 }
