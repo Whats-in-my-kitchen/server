@@ -7,18 +7,18 @@ import { KitchenModel, KitcenDocument, KitchenSchema } from "../models/KitchenMo
 
 export class KitchenRepository implements IKitchenRepository {
     constructor(private readonly client: Mongoose) { }
-    async createKitchen(_kitchen: Kitchen): Promise<Kitchen> {
+    async createKitchen(name: String, userId: String): Promise<Kitchen> {
         const kitchenModel = this.client.model<KitcenDocument>(
             'kitchen',
             KitchenSchema
         ) as KitchenModel
 
         const kitchen = new kitchenModel({
-            name: _kitchen.name,
+            name: name,
             kitchenCode: nanoid(6),
-            admin: _kitchen.admin,
-            users: _kitchen.users,
-            inventory: _kitchen.inventory,
+            admin: userId,
+            users: [],
+            inventory: [],
         });
         await kitchen.save()
         return kitchen;

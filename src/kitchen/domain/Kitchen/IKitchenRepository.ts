@@ -4,7 +4,7 @@ import Kitchen from './Kitchen';
 
 export default interface IKitchenRepository {
     // Kitchen
-    createKitchen(kitchen: Kitchen): Promise<Kitchen>
+    createKitchen(name: String, userId: String): Promise<Kitchen>
     findOne(id: string): Promise<Kitchen>
     updateKitchen(kitchen: Kitchen): Promise<Kitchen>
     deleteKitchen(kitchen: Kitchen): Promise<Kitchen>

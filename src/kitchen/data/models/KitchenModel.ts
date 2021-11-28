@@ -20,10 +20,10 @@ const KitchenSchema = new mongoose.Schema({
         ref: "user",
     }],
     admin: { type: String },
-    inventory: {
+    inventory: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "groceryItem",
-    },
+    }],
 })
 
 

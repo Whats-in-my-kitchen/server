@@ -1,6 +1,8 @@
 import * as express from 'express'
 import TokenValidator from '../../../auth/helpers/TokenValidator'
+
 import IKitchenRepository from '../../domain/Kitchen/IKitchenRepository'
+import { createKitchenValidationRules, validate } from '../../helpers.ts/Validators'
 import KitchenController from './KitchenController'
 
 export default class KitchenRouter {
@@ -16,10 +18,12 @@ export default class KitchenRouter {
             (req, res, next) => tokenValidator.validate(req, res, next),
             (req, res) => controller.status(req, res)
         )
-        router.get(
+        router.post(
             '/',
-            (req, res, next) => tokenValidator.validate(req, res, next),
-            (req, res) => controller.createKitchen(req, res)
+            createKitchenValidationRules(),
+            validate,
+            (req: express.Request, res: express.Response, next: express.NextFunction) => tokenValidator.validate(req, res, next),
+            (req: express.Request, res: express.Response) => controller.createKitchen(req, res)
         )
 
 
