@@ -26,13 +26,47 @@ export default class KitchenController {
 
 
     }
+    public async findOne(req: express.Request, res: express.Response) {
+        try {
+            const { id } = req.params
+
+            return this.repository
+                .findOne(id)
+                .then((kitchen) =>
+                    res.status(200).json({
+                        kitchen: kitchen,
+                    })
+                )
+                .catch((err: Error) => res.status(404).json({ error: err }))
+        } catch (err) {
+            return res.status(400).json({ error: err })
+        }
+    }
     public async updateKitchen(req: express.Request, res: express.Response) { }
     public async deleteKitchen(req: express.Request, res: express.Response) { }
     // Users in Kitchen
-    public async addUserToKitchen(req: express.Request, res: express.Response) {
-        // ADDS USER TO KITCHEN 
+    public async joinKitchen(req: express.Request, res: express.Response) {
+        try {
+            const { code } = req.body
+
+            return this.repository
+                .joinKitchen(code)
+                .then((kitchen) =>
+                    res.status(200).json({
+                        kitchen: kitchen,
+                    })
+                )
+                .catch((err: Error) => res.status(404).json({ error: err }))
+        } catch (err) {
+            return res.status(400).json({ error: err })
+        }
 
     }
     public async removeUserFromKitchen(req: express.Request, res: express.Response) { }
 }
 
+declare module 'express-serve-static-core' {
+    interface Request {
+        user?: any
+    }
+}

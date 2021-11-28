@@ -25,6 +25,13 @@ export default class KitchenRouter {
             (req: express.Request, res: express.Response, next: express.NextFunction) => tokenValidator.validate(req, res, next),
             (req: express.Request, res: express.Response) => controller.createKitchen(req, res)
         )
+        router.get(
+            '/:id',
+            createKitchenValidationRules(),
+            validate,
+            (req: express.Request, res: express.Response, next: express.NextFunction) => tokenValidator.validate(req, res, next),
+            (req: express.Request, res: express.Response) => controller.findOne(req, res)
+        )
 
 
         return router

@@ -7,6 +7,7 @@ import { KitchenModel, KitcenDocument, KitchenSchema } from "../models/KitchenMo
 
 export class KitchenRepository implements IKitchenRepository {
     constructor(private readonly client: Mongoose) { }
+
     async createKitchen(name: String, userId: String): Promise<Kitchen> {
         const kitchenModel = this.client.model<KitcenDocument>(
             'kitchen',
@@ -23,8 +24,41 @@ export class KitchenRepository implements IKitchenRepository {
         await kitchen.save()
         return kitchen;
     }
-    findOne(id: string): Promise<Kitchen> {
-        throw new Error("Method not implemented.");
+    async joinKitchen(code: string): Promise<Kitchen> {
+        const model = this.client.model<KitcenDocument>(
+            'kitchen',
+            KitchenSchema
+        ) as KitchenModel
+        const result = await model.findOne({ kitchenCode: code })
+
+        if (result === null) return Promise.reject('Kitchen not found')
+        return new Kitchen(
+            result.name,
+            result.kitchenCode,
+            result.admin,
+            result.users,
+            result.inventory,
+            result.id,
+        )
+
+    }
+    async findOne(id: string): Promise<Kitchen> {
+        const model = this.client.model<KitcenDocument>(
+            'kitchen',
+            KitchenSchema
+        ) as KitchenModel
+        const result = await model.findById(id)
+
+        if (result === null) return Promise.reject('Kitchen not found')
+
+        return new Kitchen(
+            result.name,
+            result.kitchenCode,
+            result.admin,
+            result.users,
+            result.inventory,
+            result.id,
+        )
     }
     updateKitchen(kitchen: Kitchen): Promise<Kitchen> {
         throw new Error("Method not implemented.");
