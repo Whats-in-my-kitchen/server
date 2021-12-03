@@ -3,6 +3,7 @@ import IGroceryItemRepository from "../../domain/core/GroceryItem/IGroceryItemRe
 import IKitchenRepository from "../../domain/Kitchen/IKitchenRepository";
 import Kitchen from "../../domain/Kitchen/Kitchen";
 import IShoppingListRepository from "../../domain/Shopping/IShoppingListRepository";
+import { ShoppingList } from "../../domain/Shopping/ShoppingLists";
 
 export default class ShoppingListController {
     constructor(private readonly repository: IShoppingListRepository, private readonly groceryRepository: IGroceryItemRepository,) { }
@@ -14,15 +15,60 @@ export default class ShoppingListController {
     // SHOPPING LIST
 
     public async createShoppingList(req: express.Request, res: express.Response) {
-        return res.status(200).json({ message: 'Shopping List endpoint is Running 💅' })
+        try {
+            const { name, createdBy, description, kitchenId } = req.body
+
+            const shoppingList = new ShoppingList(name, createdBy, kitchenId, description)
+            return this.repository
+                .createShoppingList(shoppingList)
+                .then((shoppingList) =>
+                    res.status(200).json({
+                        shoppingList: shoppingList,
+                    })
+                )
+                .catch((err: Error) => res.status(404).json({ error: err }))
+        } catch (err) {
+            return res.status(400).json({ error: err })
+        }
     }
 
     public async getShoppingList(req: express.Request, res: express.Response) {
-        return res.status(200).json({ message: 'Get Shopping List Route 💅' })
+        try {
+            const { id } = req.params
+
+            return this.repository
+                .findOne(id)
+                .then((shoppingList) =>
+                    res.status(200).json({
+                        shoppingList: shoppingList,
+                    })
+                )
+                .catch((err: Error) => res.status(404).json({ error: err }))
+        } catch (err) {
+            return res.status(400).json({ error: err })
+        }
     }
 
     public async getAllShoppingList(req: express.Request, res: express.Response) {
-        return res.status(200).json({ message: 'Get All Shopping List Route 💅' })
+        try {
+            const { page, limit } = { ...req.query } as { page: any; limit: any }
+
+            return this.repository
+                .findAll(parseInt(page), parseInt(limit))
+                .then((pageable) =>
+                    res.status(200).json({
+                        metadata: {
+                            page: pageable.page,
+                            pageSize: pageable.pageSize,
+                            total_pages: pageable.totalPages,
+                        },
+                        shoppingList: pageable.data,
+                    })
+                )
+                .catch((err: Error) => res.status(404).json({ error: err }))
+        } catch (err) {
+            return res.status(400).json({ error: err })
+        }
     }
 
     public async updateShoppingList(req: express.Request, res: express.Response) {
@@ -30,7 +76,20 @@ export default class ShoppingListController {
     }
 
     public async deleteShoppingList(req: express.Request, res: express.Response) {
-        return res.status(200).json({ message: 'Delete Shopping List Route 💅' })
+        try {
+            const { id } = req.params
+
+            return this.repository
+                .deleteShoppingList(id)
+                .then((shoppingList) =>
+                    res.status(200).json({
+                        shoppingList: shoppingList,
+                    })
+                )
+                .catch((err: Error) => res.status(404).json({ error: err }))
+        } catch (err) {
+            return res.status(400).json({ error: err })
+        }
     }
 
 
