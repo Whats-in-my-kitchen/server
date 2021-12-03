@@ -2,7 +2,7 @@ import * as express from 'express'
 import TokenValidator from '../../../auth/helpers/TokenValidator'
 
 import IKitchenRepository from '../../domain/Kitchen/IKitchenRepository'
-import { createKitchenValidationRules, validate } from '../../helpers.ts/Validators'
+import { createKitchenValidationRules, joinKitchenValidation, removeUserValidation, validate } from '../../helpers.ts/Validators'
 import KitchenController from './KitchenController'
 
 export default class KitchenRouter {
@@ -32,7 +32,21 @@ export default class KitchenRouter {
             (req: express.Request, res: express.Response, next: express.NextFunction) => tokenValidator.validate(req, res, next),
             (req: express.Request, res: express.Response) => controller.findOne(req, res)
         )
+        router.post(
+            '/join',
+            joinKitchenValidation(),
+            validate,
+            (req: express.Request, res: express.Response, next: express.NextFunction) => tokenValidator.validate(req, res, next),
+            (req: express.Request, res: express.Response) => controller.joinKitchen(req, res)
+        )
 
+        router.delete(
+            '/users',
+            removeUserValidation(),
+            validate,
+            (req: express.Request, res: express.Response, next: express.NextFunction) => tokenValidator.validate(req, res, next),
+            (req: express.Request, res: express.Response) => controller.removeUserFromKitchen(req, res)
+        )
 
         return router
     }

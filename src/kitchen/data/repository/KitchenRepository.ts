@@ -24,33 +24,40 @@ export class KitchenRepository implements IKitchenRepository {
         await kitchen.save()
         return kitchen;
     }
-    async joinKitchen(code: string): Promise<Kitchen> {
+    async joinKitchen(kitchenCode: string, userId: string): Promise<Kitchen> {
         const model = this.client.model<KitcenDocument>(
             'kitchen',
             KitchenSchema
         ) as KitchenModel
-        const result = await model.findOne({ kitchenCode: code })
+        const kitchen = await model.findOne({ kitchenCode: kitchenCode })
 
-        if (result === null) return Promise.reject('Kitchen not found')
-        return new Kitchen(
-            result.name,
-            result.kitchenCode,
-            result.admin,
-            result.users,
-            result.inventory,
-            result.id,
-        )
-
+        if (kitchen === null) return Promise.reject('Kitchen not found')
+        // const userExists = await model.findOne({ kitchenCode: kitchenCode, users: { $in: [userId] } })
+        const userExists = kitchen.users.includes(userId)
+        if (!userExists) {
+            kitchen.users.unshift(userId)
+            await kitchen.save()
+            return new Kitchen(
+                kitchen.name,
+                kitchen.kitchenCode,
+                kitchen.admin,
+                kitchen.users,
+                kitchen.inventory,
+                kitchen.id,
+            )
+        }
+        else {
+            return Promise.reject('User Already Joined the Kitchen')
+        }
     }
+
     async findOne(id: string): Promise<Kitchen> {
         const model = this.client.model<KitcenDocument>(
             'kitchen',
             KitchenSchema
         ) as KitchenModel
         const result = await model.findById(id)
-
         if (result === null) return Promise.reject('Kitchen not found')
-
         return new Kitchen(
             result.name,
             result.kitchenCode,
@@ -60,17 +67,35 @@ export class KitchenRepository implements IKitchenRepository {
             result.id,
         )
     }
+
     updateKitchen(kitchen: Kitchen): Promise<Kitchen> {
         throw new Error("Method not implemented.");
     }
 
-    addUserToKitchen(user: User): Promise<User> {
-        throw new Error("Method not implemented.");
-    }
 
-    // TODO: Should Implement this later
-    removeUserFromKitchen(user: User): Promise<User> {
-        throw new Error("Method not implemented.");
+
+
+    async removeUserFromKitchen(kitchenCode: string, user: string, userId: String): Promise<string> {
+        const model = this.client.model<KitcenDocument>(
+            'kitchen',
+            KitchenSchema
+        ) as KitchenModel
+
+        const kitchen = await model.findOne({ kitchenCode: kitchenCode })
+
+        if (kitchen === null) return Promise.reject('Kitchen Not Found')
+        if (kitchen.admin != userId) return Promise.reject('Only admins can remove user')
+        const userExists = kitchen.users.includes(user)
+        if (userExists) {
+            await kitchen.update({ $pull: { users: user } })
+            return user;
+        }
+        else {
+            return Promise.reject('User is not in the Kitchen')
+        }
+
+
+        return user;
     }
     // TODO: Should Implement this later
     deleteKitchen(kitchen: Kitchen): Promise<Kitchen> {

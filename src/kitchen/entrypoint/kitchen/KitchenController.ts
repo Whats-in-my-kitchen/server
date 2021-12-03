@@ -47,10 +47,10 @@ export default class KitchenController {
     // Users in Kitchen
     public async joinKitchen(req: express.Request, res: express.Response) {
         try {
-            const { code } = req.body
+            const { kitchenCode } = req.body
 
             return this.repository
-                .joinKitchen(code)
+                .joinKitchen(kitchenCode, req.user)
                 .then((kitchen) =>
                     res.status(200).json({
                         kitchen: kitchen,
@@ -62,7 +62,23 @@ export default class KitchenController {
         }
 
     }
-    public async removeUserFromKitchen(req: express.Request, res: express.Response) { }
+    public async removeUserFromKitchen(req: express.Request, res: express.Response) {
+        try {
+            const { kitchenCode, removeUserId } = req.body
+
+            return this.repository
+                .removeUserFromKitchen(kitchenCode, removeUserId, req.user)
+                .then((removedUser) =>
+                    res.status(200).json({
+                        removedUser: removedUser,
+                        "userRemoved": true,
+                    })
+                )
+                .catch((err: Error) => res.status(404).json({ error: err, "userRemoved": false }))
+        } catch (err) {
+            return res.status(400).json({ error: err })
+        }
+    }
 }
 
 declare module 'express-serve-static-core' {

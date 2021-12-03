@@ -7,6 +7,19 @@ export const createKitchenValidationRules = () => {
     ]
 }
 
+export const joinKitchenValidation = () => {
+    return [
+        body('kitchenCode', 'Kitchen Code is required').notEmpty(),
+    ]
+}
+
+export const removeUserValidation = () => {
+    return [
+        body('kitchenCode', 'Kitchen Code is required').notEmpty(),
+        body('removeUserId', 'User Id is required').notEmpty(),
+    ]
+}
+
 
 export const validate = (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req)

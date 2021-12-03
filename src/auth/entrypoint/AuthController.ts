@@ -24,7 +24,7 @@ export default class AuthController {
     }
 
     public async status(req: express.Request, res: express.Response) {
-        return res.status(200).json({ message: 'Auth endpoint is Running 💅' })
+        return res.status(200).json({ message: 'Auth endpoint is Running.' })
     }
 
     public async signin(req: express.Request, res: express.Response) {
