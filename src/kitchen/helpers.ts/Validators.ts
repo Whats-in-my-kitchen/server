@@ -30,6 +30,14 @@ export const createShoppingListValidationRules = () => {
     ]
 }
 
+
+// GROCERY ITEM VALIDATIONS
+export const addGroceryItemValidation = () => {
+    return [
+        body('name', 'Grocery Item Name is required').notEmpty(),
+
+    ]
+}
 export const validate = (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req)
     if (errors.isEmpty()) {

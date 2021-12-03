@@ -1,4 +1,5 @@
 import express from "express";
+import { GroceryItem } from "../../domain/core/GroceryItem/GroceryItem";
 import IGroceryItemRepository from "../../domain/core/GroceryItem/IGroceryItemRepository";
 import IKitchenRepository from "../../domain/Kitchen/IKitchenRepository";
 import Kitchen from "../../domain/Kitchen/Kitchen";
@@ -95,13 +96,78 @@ export default class ShoppingListController {
 
     // GROCERY ITEMS IN SHOPPING LIST
     public async addGroceryItem(req: express.Request, res: express.Response) {
-        return res.status(200).json({ message: 'Add Grocery Item Route💅' })
+        try {
+            const { name, displayImageUrl, unitPrice, unitMeasurement, quantity, status } = req.body
+            const { id } = req.params
+
+            const groceryItem = new GroceryItem(name, displayImageUrl, unitPrice, unitMeasurement, quantity, status)
+            return this.groceryRepository
+                .addGroceryItem(id, groceryItem)
+                .then((item) =>
+                    res.status(200).json({
+                        groceryItem: item,
+                        listId: id,
+                    })
+                )
+                .catch((err: Error) => res.status(404).json({ error: err }))
+        } catch (err) {
+            return res.status(400).json({ error: err })
+        }
+    }
+    public async getGroceryItem(req: express.Request, res: express.Response) {
+        try {
+            const { id } = req.body
+
+            return this.groceryRepository
+                .findOne(id)
+                .then((groceryItem) =>
+                    res.status(200).json({
+                        groceryItem: groceryItem,
+                    })
+                )
+                .catch((err: Error) => res.status(404).json({ error: err }))
+        } catch (err) {
+            return res.status(400).json({ error: err })
+        }
     }
     public async deleteGroceryItem(req: express.Request, res: express.Response) {
-        return res.status(200).json({ message: 'Delete Grocery Item Route 💅' })
+        try {
+            const { itemId } = req.body
+            const { id } = req.params
+
+
+            return this.groceryRepository
+                .removeGroceryItem(id, itemId)
+                .then((item) =>
+                    res.status(200).json({
+                        groceryItem: item,
+                        listId: id,
+                        removed: true
+                    })
+                )
+                .catch((err: Error) => res.status(404).json({ error: err, removed: false }))
+        } catch (err) {
+            return res.status(400).json({ error: err })
+        }
     }
     public async updateGroceryItem(req: express.Request, res: express.Response) {
-        return res.status(200).json({ message: 'Update Grocery Item Route 💅' })
+        try {
+            const { name, displayImageUrl, unitPrice, unitMeasurement, quantity, status } = req.body
+            const { id } = req.body
+
+            const groceryItem = new GroceryItem(name, displayImageUrl, unitPrice, unitMeasurement, quantity, status)
+            return this.groceryRepository
+                .updateGroceryItem(id, groceryItem)
+                .then((item) =>
+                    res.status(200).json({
+                        groceryItem: item,
+                        listId: id,
+                    })
+                )
+                .catch((err: Error) => res.status(404).json({ error: err }))
+        } catch (err) {
+            return res.status(400).json({ error: err })
+        }
     }
 }
 

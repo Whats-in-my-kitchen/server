@@ -5,7 +5,7 @@ export interface KitcenDocument extends mongoose.Document {
     kitchenCode: string,
     users: string[],
     admin: string,
-    inventory: GroceryItem[]
+    inventory: string[]
 }
 
 

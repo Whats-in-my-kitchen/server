@@ -110,7 +110,7 @@ export class KitchenRepository implements IKitchenRepository {
         else {
             return Promise.reject('User is not in the Kitchen')
         }
-        return user;
+
     }
     // TODO: Should Implement this later
     deleteKitchen(kitchen: Kitchen): Promise<Kitchen> {

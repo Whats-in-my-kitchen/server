@@ -9,8 +9,8 @@ export class ShoppingList {
         public readonly kitchenId?: string,
         public readonly description?: string,
         public readonly id?: string,
-        public readonly items?: Array<GroceryItem>,
-        public readonly users?: Array<User>
+        public readonly items?: Array<String>,
+        public readonly users?: Array<String>
     ) {
     }
 }

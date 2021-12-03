@@ -3,7 +3,7 @@ import TokenValidator from '../../../auth/helpers/TokenValidator'
 import { validate } from '../../../auth/helpers/Validators'
 import IGroceryItemRepository from '../../domain/core/GroceryItem/IGroceryItemRepository'
 import IShoppingListRepository from '../../domain/Shopping/IShoppingListRepository'
-import { createShoppingListValidationRules } from '../../helpers.ts/Validators'
+import { addGroceryItemValidation, createShoppingListValidationRules } from '../../helpers.ts/Validators'
 import ShoppingListController from './ShoppingListController'
 
 export default class ShoppingListRouter {
@@ -55,9 +55,16 @@ export default class ShoppingListRouter {
         // CRUD GROCERY ITEM TO SHOPPING LIST ROUTES
         router.post(
             '/:id/groceryItem',
+            addGroceryItemValidation(),
             validate,
             (req: express.Request, res: express.Response, next: express.NextFunction) => tokenValidator.validate(req, res, next),
             (req: express.Request, res: express.Response) => controller.addGroceryItem(req, res)
+        )
+        router.get(
+            '/:id/groceryItem',
+            validate,
+            (req: express.Request, res: express.Response, next: express.NextFunction) => tokenValidator.validate(req, res, next),
+            (req: express.Request, res: express.Response) => controller.getGroceryItem(req, res)
         )
         router.delete(
             '/:id/groceryItem',

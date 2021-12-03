@@ -7,7 +7,7 @@ export default class Kitchen {
         public readonly kitchenCode: string,
         public readonly admin: string,
         public readonly users: Array<String>,
-        public readonly inventory: Array<GroceryItem>,
+        public readonly inventory: Array<String>,
         public readonly id?: string,
     ) { }
 }
