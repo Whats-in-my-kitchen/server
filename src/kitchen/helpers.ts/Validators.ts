@@ -23,7 +23,12 @@ export const removeUserValidation = () => {
 
 
 // SHOPPING LIST VALIDATIONS
-
+export const createShoppingListValidationRules = () => {
+    return [
+        body('name', 'Shopping List Name is required').notEmpty(),
+        body('createdBy', 'Owoner Id is required').notEmpty(),
+    ]
+}
 
 export const validate = (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req)

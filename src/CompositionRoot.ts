@@ -6,6 +6,7 @@ import JwtTokenService from './auth/data/services/JwtTokenService'
 import RedisTokenStore from './auth/data/services/RedisTokenStore'
 import AuthRouter from './auth/entrypoint/AuthRouter'
 import TokenValidator from './auth/helpers/TokenValidator'
+import GroceryItemRepositoryShopping from './kitchen/data/repository/GroceryItemRepository'
 import { KitchenRepository } from './kitchen/data/repository/KitchenRepository'
 import ShoppingListRepository from './kitchen/data/repository/ShoppingListRepository'
 import KitchenRouter from './kitchen/entrypoint/kitchen/KitchenRouter'
@@ -56,11 +57,12 @@ export default class CompositionRoot {
 
     public static shoppingListRouter() {
         const repository = new ShoppingListRepository(this.client)
+        const groceryRepository = new GroceryItemRepositoryShopping(this.client)
         const tokenService = new JwtTokenService(process.env.PRIVATE_KEY as string)
         const tokenStore = new RedisTokenStore(this.redisClient)
         const tokenValidator = new TokenValidator(tokenService, tokenStore)
 
-        return ShoppingListRouter.configure(repository, tokenValidator)
+        return ShoppingListRouter.configure(repository, groceryRepository, tokenValidator)
     }
 
 

@@ -26,6 +26,7 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/faker": "^5.1.5",
     "@types/nanoid": "^3.0.0",
     "bcrypt": "^5.0.0",
