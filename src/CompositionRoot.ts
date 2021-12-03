@@ -7,7 +7,9 @@ import RedisTokenStore from './auth/data/services/RedisTokenStore'
 import AuthRouter from './auth/entrypoint/AuthRouter'
 import TokenValidator from './auth/helpers/TokenValidator'
 import { KitchenRepository } from './kitchen/data/repository/KitchenRepository'
+import ShoppingListRepository from './kitchen/data/repository/ShoppingListRepository'
 import KitchenRouter from './kitchen/entrypoint/kitchen/KitchenRouter'
+import ShoppingListRouter from './kitchen/entrypoint/shoppingList/ShoppingListRouter'
 
 export default class CompositionRoot {
     private static client: mongoose.Mongoose
@@ -32,12 +34,13 @@ export default class CompositionRoot {
         const tokenStore = new RedisTokenStore(this.redisClient)
         const tokenValidator = new TokenValidator(tokenService, tokenStore)
 
+
         return AuthRouter.configure(
             repository,
             tokenService,
             tokenStore,
             passwordService,
-            tokenValidator
+            tokenValidator,
         )
     }
 
@@ -48,6 +51,16 @@ export default class CompositionRoot {
         const tokenValidator = new TokenValidator(tokenService, tokenStore)
 
         return KitchenRouter.configure(repository, tokenValidator)
+    }
+
+
+    public static shoppingListRouter() {
+        const repository = new ShoppingListRepository(this.client)
+        const tokenService = new JwtTokenService(process.env.PRIVATE_KEY as string)
+        const tokenStore = new RedisTokenStore(this.redisClient)
+        const tokenValidator = new TokenValidator(tokenService, tokenStore)
+
+        return ShoppingListRouter.configure(repository, tokenValidator)
     }
 
 

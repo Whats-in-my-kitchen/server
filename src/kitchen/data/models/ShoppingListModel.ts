@@ -5,6 +5,7 @@ export interface ShoppingListDocument extends mongoose.Document {
     kitchenId: string,
     description: string,
     items: []
+    users: []
 }
 
 export interface ShoppingListModel extends mongoose.Model<ShoppingListDocument> { }
@@ -17,6 +18,10 @@ const ShoppingListSchema = new mongoose.Schema({
     items: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "groceryItem",
+    },
+    users: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
     },
 })
 export { ShoppingListSchema }

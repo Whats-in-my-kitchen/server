@@ -1,9 +1,11 @@
+import { Mongoose } from "mongoose";
 import Pageable from "../../domain/core/Pageable";
 import IShoppingListRepository from "../../domain/Shopping/IShoppingListRepository";
 import { ShoppingList } from "../../domain/Shopping/ShoppingLists";
 
 
 export default class ShoppingListRepository implements IShoppingListRepository {
+    constructor(private readonly client: Mongoose) { }
     async findAll(): Promise<ShoppingList> {
         throw new Error("Method not implemented.");
     }
@@ -21,5 +23,4 @@ export default class ShoppingListRepository implements IShoppingListRepository {
     deleteShoppingList(shoppingListId: string): Promise<ShoppingList> {
         throw new Error("Method not implemented.");
     }
-
 }

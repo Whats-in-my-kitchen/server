@@ -15,5 +15,6 @@ app.use(express.urlencoded({ extended: true }))
 // Routes
 app.use('/auth', CompositionRoot.authRouter())
 app.use('/kitchen', CompositionRoot.kitchenRouter())
+app.use('/shoppingList', CompositionRoot.shoppingListRouter())
 
 app.listen(PORT, () => console.log(`listening on port ${PORT}`))

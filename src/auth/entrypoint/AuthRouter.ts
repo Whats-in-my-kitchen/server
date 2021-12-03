@@ -23,7 +23,7 @@ export default class AuthRouter {
         tokenStore: ITokenStore,
         passwordService: IPasswordService,
         tokenValidator: TokenValidator,
-        repository: IAuthRepository,
+
     ): express.Router {
         const router = express.Router()
         let controller = AuthRouter.composeController(

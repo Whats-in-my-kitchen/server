@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { body, validationResult } from 'express-validator'
 
+// KITCHEN ROUTE VALIDATIONS
 export const createKitchenValidationRules = () => {
     return [
         body('name', 'Name is required').notEmpty(),
@@ -19,6 +20,9 @@ export const removeUserValidation = () => {
         body('removeUserId', 'User Id is required').notEmpty(),
     ]
 }
+
+
+// SHOPPING LIST VALIDATIONS
 
 
 export const validate = (req: Request, res: Response, next: NextFunction) => {
