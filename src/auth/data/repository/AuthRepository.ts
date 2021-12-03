@@ -30,4 +30,17 @@ export default class AuthRepository implements IAuthRepository {
         await savedUser.save()
         return savedUser.id
     }
+
+    public async getUser(userId: string): Promise<User> {
+        const userModel = this.client.model<UserModel>('User', UserSchema)
+        const user = await userModel.findById(userId);
+        if (user === null) return Promise.reject('User not found')
+        return new User(
+            user.id,
+            user.username,
+            user.email,
+            '',
+            user.kitchenId
+        )
+    }
 }

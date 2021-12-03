@@ -1,5 +1,6 @@
 import { Mongoose } from 'mongoose'
 import { nanoid } from 'nanoid'
+import { UserModel, UserSchema } from '../../../auth/data/models/UserModel';
 import User from "../../../auth/domain/User";
 import IKitchenRepository from "../../domain/Kitchen/IKitchenRepository";
 import Kitchen from "../../domain/Kitchen/Kitchen";
@@ -13,7 +14,10 @@ export class KitchenRepository implements IKitchenRepository {
             'kitchen',
             KitchenSchema
         ) as KitchenModel
-
+        const userModel = this.client.model<UserModel>('User', UserSchema)
+        const user = await userModel.findById(userId)
+        if (user == null) return Promise.reject('User Does not Exist')
+        if (user.kitchenId != null) return Promise.reject('User cannot create more than one kitchen')
         const kitchen = new kitchenModel({
             name: name,
             kitchenCode: nanoid(6),
@@ -22,8 +26,13 @@ export class KitchenRepository implements IKitchenRepository {
             inventory: [],
         });
         await kitchen.save()
+        if (user != null) {
+            user.kitchenId = kitchen.id;
+            user.save()
+        }
         return kitchen;
     }
+
     async joinKitchen(kitchenCode: string, userId: string): Promise<Kitchen> {
         const model = this.client.model<KitcenDocument>(
             'kitchen',
@@ -37,6 +46,14 @@ export class KitchenRepository implements IKitchenRepository {
         if (!userExists) {
             kitchen.users.unshift(userId)
             await kitchen.save()
+
+            const userModel = this.client.model<UserModel>('User', UserSchema)
+            const user = await userModel.findById(userId)
+            if (user != null) {
+                user.kitchenId = kitchen.id;
+                user.save()
+            }
+
             return new Kitchen(
                 kitchen.name,
                 kitchen.kitchenCode,
@@ -93,8 +110,6 @@ export class KitchenRepository implements IKitchenRepository {
         else {
             return Promise.reject('User is not in the Kitchen')
         }
-
-
         return user;
     }
     // TODO: Should Implement this later

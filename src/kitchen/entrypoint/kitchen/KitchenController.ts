@@ -42,6 +42,7 @@ export default class KitchenController {
             return res.status(400).json({ error: err })
         }
     }
+    // TODO : Update Kitchen 
     public async updateKitchen(req: express.Request, res: express.Response) { }
     public async deleteKitchen(req: express.Request, res: express.Response) { }
     // Users in Kitchen

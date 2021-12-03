@@ -22,14 +22,15 @@ export default class AuthRouter {
         tokenService: ITokenService,
         tokenStore: ITokenStore,
         passwordService: IPasswordService,
-        tokenValidator: TokenValidator
+        tokenValidator: TokenValidator,
+        repository: IAuthRepository,
     ): express.Router {
         const router = express.Router()
         let controller = AuthRouter.composeController(
             authRepository,
             tokenService,
             tokenStore,
-            passwordService
+            passwordService,
         )
         router.get(
             '/',
@@ -58,6 +59,14 @@ export default class AuthRouter {
             (req: express.Request, res: express.Response) =>
                 controller.signout(req, res)
         )
+
+        router.get(
+            '/user',
+            (req, res, next) => tokenValidator.validate(req, res, next),
+            (req: express.Request, res: express.Response) =>
+                controller.getUser(req, res)
+        )
+
         return router
     }
 
@@ -74,7 +83,8 @@ export default class AuthRouter {
             signinUseCase,
             signupUseCase,
             signoutUseCase,
-            tokenService
+            tokenService,
+            authRepository
         )
         return controller
     }
