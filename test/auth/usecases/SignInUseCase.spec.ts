@@ -3,7 +3,8 @@ import chai, { expect } from 'chai';
 import SignInUseCase from '../../../src/auth/usecases/SignInUseCase';
 import IAuthRepository from '../../../src/auth/domain/IAuthRepository';
 import IPasswordService from '../../../src/auth/services/IPasswordService';
-import { v4 as uuidv4 } from 'uuid';
+import { uuid } from 'uuidv4';
+
 import FakeRepository from '../helpers/FakeRepository';
 import FakePasswordService from '../helpers/FakePasswordService';
 import chaiAsPromised from 'chai-as-promised';
@@ -15,14 +16,13 @@ describe('SignInUseCase', () => {
     let sut: SignInUseCase
     let repository: IAuthRepository
     let passwordService: IPasswordService
-
     const user = {
-        id: uuidv4(),
+        id: uuid(),
         username: 'Saurav',
         email: 'saurav@gmail.com',
         password: 'sauravPassword',
         displayImageUrl: 'none',
-        type: 'email',
+
     }
     beforeEach(() => {
         repository = new FakeRepository()
@@ -31,8 +31,8 @@ describe('SignInUseCase', () => {
     })
 
     it('should throw an error when user is not found', async () => {
-        const wrongUser = { email: 'wrong@gmail.com', password: 'wrongPassword' }
+        const wrongUser = { username: 'varuas19', email: 'wrong@gmail.com', password: 'wrongPassword' }
         // Assert
-        await expect(sut.execute(wrongUser.email, wrongUser.password)).to.be.rejectedWith('User not found')
+        await expect(sut.execute(wrongUser.username, wrongUser.email, wrongUser.password)).to.be.rejectedWith('User not found')
     })
 });

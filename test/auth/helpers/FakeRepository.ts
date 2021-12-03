@@ -1,6 +1,9 @@
 import IAuthRepository from '../../../src/auth/domain/IAuthRepository';
 import User from '../../../src/auth/domain/User';
 export default class FakeRepository implements IAuthRepository {
+    getUser(user: string): Promise<User> {
+        throw new Error('Method not implemented.');
+    }
     public users =
         [
             {
@@ -9,7 +12,7 @@ export default class FakeRepository implements IAuthRepository {
                 username: 'saurav',
                 password: 'sauravPassword',
                 displayImageUrl: 'localhost',
-                type: 'email',
+
             },
             {
                 id: '2',
@@ -17,7 +20,7 @@ export default class FakeRepository implements IAuthRepository {
                 username: 'test',
                 password: 'testPassword',
                 displayImageUrl: 'localhost',
-                type: 'google',
+
             }
         ]
 
@@ -30,10 +33,10 @@ export default class FakeRepository implements IAuthRepository {
             user?.email,
             user?.password,
             user?.displayImageUrl,
-            user?.type
+
         );
     }
-    public async add(username: string, email: string, passwordHash: string, type: string): Promise<string> {
+    public async add(username: string, email: string, passwordHash: string): Promise<string> {
         const max = 9999
         const min = 1000
         const id = (Math.floor(Math.random() * (+max - +min)) + min).toString();
@@ -41,7 +44,6 @@ export default class FakeRepository implements IAuthRepository {
             id: id,
             email: email,
             username: username,
-            type: type,
             password: passwordHash,
             displayImageUrl: ''
         })
