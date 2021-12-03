@@ -85,7 +85,7 @@ export default class GroceryItemRepositoryShopping implements IGroceryItemReposi
         if (findGroceryItem === null) return Promise.reject('Grocery Item Not Found')
 
 
-        await findGroceryItem.update(groceryItem, { upsert: true, multi: true })
+        await findGroceryItem.update(groceryItem)
 
         return groceryItem;
 
