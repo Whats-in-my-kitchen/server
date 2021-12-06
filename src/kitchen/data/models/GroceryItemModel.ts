@@ -16,7 +16,7 @@ const GroceryItemSchema = new mongoose.Schema({
     displayImageUrl: { type: String, required: false },
     unitPrice: { type: Number, required: false },
     unitMeasurement: { type: String },
-    quantity: { type: Number },
+    quantity: { type: Number, default: 1 },
     status: { type: Boolean, default: false }
 })
 export { GroceryItemSchema }

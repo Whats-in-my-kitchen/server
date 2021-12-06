@@ -22,7 +22,6 @@ describe('SignInUseCase', () => {
         email: 'saurav@gmail.com',
         password: 'sauravPassword',
         displayImageUrl: 'none',
-
     }
     beforeEach(() => {
         repository = new FakeRepository()
